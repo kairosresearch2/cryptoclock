@@ -1,0 +1,16 @@
+{
+  "name": "CryptoClock",
+  "short_name": "CryptoClock",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070B",
+  "theme_color": "#05070B",
+  "description": "Acompanha o período de retenção de 365 dias para isenção de IRS em Portugal.",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
