@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="titanium" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0A0D14"/>
+      <stop offset="60%" stop-color="#05070A"/>
+      <stop offset="100%" stop-color="#020305"/>
+    </radialGradient>
+
+    <linearGradient id="champagne-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3E7C4"/>
+      <stop offset="50%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#AA7C11"/>
+    </linearGradient>
+
+    <linearGradient id="platinum" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.15"/>
+      <stop offset="50%" stop-color="#8A95A5" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <linearGradient id="emerald-glow" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#005230"/>
+      <stop offset="50%" stop-color="#00FF87"/>
+      <stop offset="100%" stop-color="#60EFFF"/>
+    </linearGradient>
+
+    <filter id="neon-glow-gold" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#D4AF37" flood-opacity="0.25"/>
+    </filter>
+    <filter id="neon-glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="15" flood-color="#00FF87" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="140" fill="url(#titanium)"/>
+
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#platinum)" stroke-width="3" opacity="0.8"/>
+  <circle cx="256" cy="256" r="195" fill="none" stroke="url(#champagne-gold)" stroke-width="1.5" opacity="0.3" stroke-dasharray="8 12"/>
+
+  <circle cx="256" cy="256" r="150" fill="#06080C" stroke="#00FF87" stroke-width="1" opacity="0.15"/>
+  
+  <g stroke="url(#platinum)" stroke-width="1" opacity="0.2">
+    <line x1="256" y1="60" x2="256" y2="452"/>
+    <line x1="60" y1="256" x2="452" y2="256"/>
+    <circle cx="256" cy="256" r="100" fill="none" stroke-dasharray="4 6"/>
+  </g>
+
+  <path d="M 256 256 L 256 120" stroke="url(#champagne-gold)" stroke-width="7" stroke-linecap="round" filter="url(#neon-glow-gold)"/>
+  <path d="M 256 256 L 330 220" stroke="url(#champagne-gold)" stroke-width="9" stroke-linecap="round" filter="url(#neon-glow-gold)"/>
+  
+  <circle cx="256" cy="256" r="12" fill="#020305" stroke="url(#champagne-gold)" stroke-width="3"/>
+  <circle cx="256" cy="256" r="4" fill="#00FF87"/>
+
+  <path d="M 100 380 Q 180 370 230 310 T 370 140 L 410 100" fill="none" stroke="url(#emerald-glow)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon-glow-emerald)"/>
+  
+  <path d="M 360 100 L 410 100 L 410 150" fill="none" stroke="url(#emerald-glow)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon-glow-emerald)"/>
+</svg>
