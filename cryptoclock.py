@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 import uuid
 import json
@@ -297,9 +296,9 @@ with aba_painel:
 
     col_btc, col_eth = st.columns(2)
     with col_btc:
-        components.html(widget_tradingview("BINANCE:BTCUSDT", "tv_btc"), height=380)
+        st.iframe(widget_tradingview("BINANCE:BTCUSDT", "tv_btc"), height=380)
     with col_eth:
-        components.html(widget_tradingview("BINANCE:ETHUSDT", "tv_eth"), height=380)
+        st.iframe(widget_tradingview("BINANCE:ETHUSDT", "tv_eth"), height=380)
 
     # -------------------------------------------------------
     # CÁLCULOS
