@@ -49,22 +49,29 @@ def formatar_euros(valor):
 # LIGAÇÃO AO GOOGLE SHEETS (para o chat, que é partilhado por todos)
 # ---------------------------------------------------------
 conn_gsheets = None
+erro_ligacao_gsheets = None
 if GSHEETS_DISPONIVEL:
     try:
         conn_gsheets = st.connection("gsheets", type=GSheetsConnection)
-    except Exception:
+    except Exception as e:
         conn_gsheets = None
+        erro_ligacao_gsheets = str(e)
+else:
+    erro_ligacao_gsheets = "O pacote 'st-gsheets-connection' não está instalado (verifica o requirements.txt)."
 
 
 def carregar_mensagens():
     """Lê as mensagens do chat a partir da Google Sheet (aba 'Mensagens')."""
+    global erro_ligacao_gsheets
     if conn_gsheets is None:
         return []
     try:
         df = conn_gsheets.read(worksheet="Mensagens", ttl=5)
         df = df.dropna(how="all")
+        erro_ligacao_gsheets = None
         return df.to_dict("records")
-    except Exception:
+    except Exception as e:
+        erro_ligacao_gsheets = str(e)
         return []
 
 
@@ -452,6 +459,9 @@ with aba_chat:
             "2. Configuraste os **Secrets** da app em share.streamlit.io → Settings → Secrets\n"
             "3. Partilhaste a folha com o email do teu Service Account, como **Editor**"
         )
+        if erro_ligacao_gsheets:
+            with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
+                st.code(erro_ligacao_gsheets)
     else:
         if "nick" not in st.session_state:
             st.session_state.nick = ""
@@ -482,7 +492,12 @@ with aba_chat:
         st.markdown("---")
 
         mensagens = carregar_mensagens()
-        if not mensagens:
+
+        if erro_ligacao_gsheets:
+            st.error("Não consegui ler as mensagens da Google Sheet.")
+            with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
+                st.code(erro_ligacao_gsheets)
+        elif not mensagens:
             st.caption("Ainda não há mensagens. Sê o primeiro a dizer olá! 👋")
         else:
             for msg in reversed(mensagens):
