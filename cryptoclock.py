@@ -86,7 +86,7 @@ def guardar_mensagem(nick, texto):
 
 
 # ---------------------------------------------------------
-# CSS GLOBAL — "CINEMATIC DARK WEALTH"
+# CSS GLOBAL — "CINEMATIC DARK WEALTH" + ANCORAGEM DO FUNDO ANIMADO
 # ---------------------------------------------------------
 st.markdown("""
 <style>
@@ -101,23 +101,40 @@ html, body, [class*="css"], .stMarkdown, p, span, label, div {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-.stApp {
-    background:
-        radial-gradient(circle at 18% -8%, rgba(52, 211, 153, 0.12), transparent 40%),
-        radial-gradient(circle at 82% 105%, rgba(34, 211, 238, 0.10), transparent 45%),
-        #05070B;
+.stApp { background: #030508; }
+
+/* -----------------------------------------------------------------
+   Truque para "ancorar" o 1º iframe da página (o nosso Canvas de
+   fundo "To The Moon") como um fundo fixo, atrás de todo o conteúdo.
+   Isto usa o testid interno do Streamlit para o wrapper de iframes —
+   funciona hoje, mas por não ser uma API oficial, pode deixar de
+   funcionar numa futura atualização do Streamlit.
+------------------------------------------------------------------ */
+div[data-testid="stIFrame"]:first-of-type {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+div[data-testid="stIFrame"]:first-of-type iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
 }
 
-.block-container { padding-top: 2.2rem; padding-left: 1.1rem; padding-right: 1.1rem; max-width: 920px; }
+.block-container { padding-top: 2.2rem; padding-left: 1.1rem; padding-right: 1.1rem; max-width: 920px; position: relative; z-index: 1; }
 section[data-testid="stSidebar"] {
-    background-color: #070A10;
+    background-color: rgba(7, 10, 16, 0.85);
     border-right: 1px solid rgba(255,255,255,0.06);
+    position: relative; z-index: 1;
 }
 
 /* ---------- Cabeçalho ---------- */
 .kc-title {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 2.5rem; font-weight: 700; line-height: 1.1;
+    font-size: 2.4rem; font-weight: 700; line-height: 1.1;
     background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     display: inline-block; vertical-align: middle;
@@ -130,7 +147,7 @@ section[data-testid="stSidebar"] {
     text-transform: uppercase; margin-left: 10px; vertical-align: middle;
 }
 .kc-subtitle {
-    color: #8B92A5; font-size: 0.93rem; margin-top: 8px; margin-bottom: 1.6rem;
+    color: #9AA3B2; font-size: 0.93rem; margin-top: 8px; margin-bottom: 1.6rem;
     animation: ccFadeSlideUp 0.8s ease-out 0.1s backwards;
 }
 
@@ -144,13 +161,13 @@ section[data-testid="stSidebar"] {
 
 /* ---------- Cartões "vidro líquido" (KPIs) ---------- */
 .kc-glass-card {
-    background: rgba(13, 17, 23, 0.7);
+    background: rgba(13, 17, 23, 0.72);
     border: 1px solid rgba(52, 211, 153, 0.18);
     border-radius: 16px;
     padding: 18px 20px;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 0 0 1px rgba(34,211,238,0.04), 0 10px 30px rgba(0,0,0,0.45);
+    box-shadow: 0 0 0 1px rgba(34,211,238,0.04), 0 10px 30px rgba(0,0,0,0.5);
     height: 100%;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
     animation: ccFadeSlideUp 0.7s ease-out backwards;
@@ -158,7 +175,7 @@ section[data-testid="stSidebar"] {
 .kc-glass-card:hover {
     transform: translateY(-3px);
     border-color: rgba(52, 211, 153, 0.5);
-    box-shadow: 0 0 24px rgba(52, 211, 153, 0.18), 0 14px 34px rgba(0,0,0,0.5);
+    box-shadow: 0 0 24px rgba(52, 211, 153, 0.18), 0 14px 34px rgba(0,0,0,0.55);
 }
 .kc-metric-label { color: #8B92A5; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
 .kc-metric-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.55rem; font-weight: 700; color: #ECF3F0; letter-spacing: -0.01em; }
@@ -167,22 +184,22 @@ section[data-testid="stSidebar"] {
 
 /* ---------- Formulário (glassmorphism líquido) ---------- */
 div[data-testid="stForm"] {
-    background: rgba(13, 17, 23, 0.7);
+    background: rgba(13, 17, 23, 0.72);
     border: 1px solid rgba(34, 211, 238, 0.18);
     border-radius: 16px;
     padding: 1.3rem 1.3rem 0.3rem 1.3rem;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 0 0 1px rgba(52,211,153,0.04), 0 10px 30px rgba(0,0,0,0.45);
+    box-shadow: 0 0 0 1px rgba(52,211,153,0.04), 0 10px 30px rgba(0,0,0,0.5);
     transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     animation: ccFadeSlideUp 0.75s ease-out 0.05s backwards;
 }
 div[data-testid="stForm"]:hover {
     border-color: rgba(34, 211, 238, 0.4);
-    box-shadow: 0 0 22px rgba(34, 211, 238, 0.12), 0 12px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 0 22px rgba(34, 211, 238, 0.12), 0 12px 30px rgba(0,0,0,0.55);
 }
 
-/* ---------- Botões, com transições fluidas ---------- */
+/* ---------- Botões ---------- */
 div[data-testid="stButton"] button,
 div[data-testid="stFormSubmitButton"] button,
 div[data-testid="stDownloadButton"] button {
@@ -219,7 +236,7 @@ div[data-testid="stDownloadButton"] button:hover {
 
 /* ---------- Fórum Anónimo — bolhas de chat ---------- */
 .kc-chat-bubble {
-    background: rgba(13, 17, 23, 0.7);
+    background: rgba(13, 17, 23, 0.72);
     border: 1px solid rgba(52, 211, 153, 0.15);
     border-radius: 16px;
     padding: 10px 16px;
@@ -237,18 +254,211 @@ div[data-testid="stDownloadButton"] button:hover {
 .kc-chat-hora { color: #55606E; font-size: 0.7rem; float: right; }
 .kc-chat-texto { color: #DCE6E1; font-size: 0.92rem; margin-top: 4px; }
 
-/* ---------- Acessibilidade tátil ---------- */
 button, input, select, textarea, div[data-baseweb="select"] { min-height: 44px; }
 
-/* ---------- Responsivo ---------- */
 @media (max-width: 640px) {
     .block-container { padding-left: 0.6rem; padding-right: 0.6rem; }
-    .kc-title { font-size: 1.9rem; }
+    .kc-title { font-size: 1.7rem; }
     .kc-badge { display: block; margin-left: 0; margin-top: 8px; width: fit-content; }
     .kc-metric-value { font-size: 1.2rem; }
 }
 </style>
 """, unsafe_allow_html=True)
+
+
+# ---------------------------------------------------------
+# FUNDO IMERSIVO "TO THE MOON" — CANVAS ANIMADO (deve ser o 1º iframe da página)
+# ---------------------------------------------------------
+def gerar_html_fundo_animado():
+    return """
+    <style>
+      html, body { margin:0; padding:0; overflow:hidden; background:transparent; }
+      canvas { display:block; }
+    </style>
+    <canvas id="ccBgCanvas"></canvas>
+    <script>
+    (function(){
+      var canvas = document.getElementById('ccBgCanvas');
+      var ctx = canvas.getContext('2d');
+      var mouse = { x: null, y: null, ativo: false };
+      var estrelas = [];
+      var W = 0, H = 0, DPR = 1;
+      var fasePulso = 0;
+
+      function medirJanela(){
+        var pw = window.innerWidth, ph = window.innerHeight;
+        try { pw = window.parent.innerWidth; ph = window.parent.innerHeight; } catch(e) {}
+        return { pw: pw, ph: ph };
+      }
+
+      function redimensionar(){
+        var medida = medirJanela();
+        W = medida.pw; H = medida.ph;
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(W * DPR);
+        canvas.height = Math.floor(H * DPR);
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      }
+
+      function criarEstrelas(){
+        estrelas = [];
+        var quantidade = W < 640 ? 42 : 95;
+        for (var i = 0; i < quantidade; i++){
+          estrelas.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.5 + 0.5,
+            vx: (Math.random() - 0.5) * 0.06,
+            vy: (Math.random() - 0.5) * 0.06,
+          });
+        }
+      }
+
+      function ligarRastreioDoRato(){
+        function aoMover(e){
+          var px = e.clientX, py = e.clientY;
+          if (e.touches && e.touches.length) { px = e.touches[0].clientX; py = e.touches[0].clientY; }
+          mouse.x = px; mouse.y = py; mouse.ativo = true;
+        }
+        function aoSair(){ mouse.ativo = false; }
+        try {
+          window.parent.document.addEventListener('mousemove', aoMover, { passive: true });
+          window.parent.document.addEventListener('touchmove', aoMover, { passive: true });
+          window.parent.document.addEventListener('mouseleave', aoSair, { passive: true });
+        } catch (e) {
+          document.addEventListener('mousemove', aoMover, { passive: true });
+          document.addEventListener('touchmove', aoMover, { passive: true });
+        }
+      }
+
+      function tentarExpandirParaEcraTodo(){
+        try {
+          var frame = window.frameElement;
+          if (frame) {
+            frame.style.position = 'fixed';
+            frame.style.top = '0'; frame.style.left = '0';
+            frame.style.width = '100vw'; frame.style.height = '100vh';
+            frame.style.zIndex = '-1';
+            frame.style.pointerEvents = 'none';
+            frame.style.border = 'none';
+          }
+        } catch (e) {}
+      }
+
+      function desenhar(){
+        ctx.clearRect(0, 0, W, H);
+
+        var gradFundo = ctx.createRadialGradient(W*0.5, H*0.68, 0, W*0.5, H*0.68, Math.max(W,H)*0.8);
+        gradFundo.addColorStop(0, 'rgba(35,20,60,0.32)');
+        gradFundo.addColorStop(1, 'rgba(3,5,8,0)');
+        ctx.fillStyle = gradFundo;
+        ctx.fillRect(0, 0, W, H);
+
+        var luaX = W * 0.86, luaY = H * 0.14, luaR = Math.min(W, H) * 0.075;
+        var gradLua = ctx.createRadialGradient(luaX, luaY, luaR*0.2, luaX, luaY, luaR*1.9);
+        gradLua.addColorStop(0, 'rgba(195,240,255,0.9)');
+        gradLua.addColorStop(0.5, 'rgba(120,200,255,0.22)');
+        gradLua.addColorStop(1, 'rgba(120,200,255,0)');
+        ctx.fillStyle = gradLua;
+        ctx.beginPath(); ctx.arc(luaX, luaY, luaR*1.9, 0, Math.PI*2); ctx.fill();
+        ctx.fillStyle = 'rgba(225,245,255,0.85)';
+        ctx.beginPath(); ctx.arc(luaX, luaY, luaR, 0, Math.PI*2); ctx.fill();
+
+        for (var i = 0; i < estrelas.length; i++){
+          var s = estrelas[i];
+          s.x += s.vx; s.y += s.vy;
+          if (s.x < 0) s.x = W; if (s.x > W) s.x = 0;
+          if (s.y < 0) s.y = H; if (s.y > H) s.y = 0;
+
+          var dx = 0, dy = 0, dist = 99999;
+          if (mouse.ativo && mouse.x !== null){
+            dx = s.x - mouse.x; dy = s.y - mouse.y;
+            dist = Math.sqrt(dx*dx + dy*dy);
+          }
+          var offX = 0, offY = 0;
+          if (dist < 130){
+            var forca = (130 - dist) / 130 * 9;
+            offX = (dx/dist) * forca; offY = (dy/dist) * forca;
+          }
+
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(150,230,255,0.85)';
+          ctx.shadowColor = 'rgba(120,220,255,0.9)';
+          ctx.shadowBlur = 4;
+          ctx.arc(s.x + offX, s.y + offY, s.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+
+        fasePulso += 0.006;
+        var pontos = 50;
+        ctx.beginPath();
+        for (var p = 0; p <= pontos; p++){
+          var t = p / pontos;
+          var x = W*0.02 + t * (luaX - W*0.05);
+          var baseY = H*0.95 - t*t*(H*0.78);
+          var onda = Math.sin(t*10 + fasePulso*20) * 5 * (1 - t*0.6);
+          var y = baseY + onda;
+          if (p === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = 'rgba(140,255,170,0.85)';
+        ctx.lineWidth = 2.2;
+        ctx.shadowColor = 'rgba(140,255,170,0.9)';
+        ctx.shadowBlur = 11;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        requestAnimationFrame(desenhar);
+      }
+
+      redimensionar();
+      criarEstrelas();
+      ligarRastreioDoRato();
+      tentarExpandirParaEcraTodo();
+
+      window.addEventListener('resize', function(){ redimensionar(); criarEstrelas(); });
+      try { window.parent.addEventListener('resize', function(){ redimensionar(); criarEstrelas(); }); } catch(e) {}
+
+      requestAnimationFrame(desenhar);
+    })();
+    </script>
+    """
+
+
+# Este TEM de ser o primeiro st.iframe/components renderizado na página,
+# para o seletor CSS ":first-of-type" o conseguir "ancorar" como fundo.
+st.iframe(gerar_html_fundo_animado(), height=1)
+
+
+# ---------------------------------------------------------
+# LOGO SVG ANIMADO — "O RELÓGIO-TOURO INFINITO"
+# ---------------------------------------------------------
+def gerar_logo_svg():
+    return """
+    <svg width="60" height="60" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 6px rgba(34,211,238,0.6));">
+      <style>
+        @keyframes ccHourSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes ccMinSpin  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .cc-logo-hour { transform-origin: 50px 50px; animation: ccHourSpin 16s linear infinite; }
+        .cc-logo-min  { transform-origin: 50px 50px; animation: ccMinSpin 6s linear infinite; }
+        .cc-logo-trend { filter: drop-shadow(0 0 5px rgba(163,230,53,0.9)); }
+      </style>
+      <circle cx="50" cy="50" r="42" fill="none" stroke="#22D3EE" stroke-width="3" opacity="0.85"/>
+      <g stroke="#22D3EE" stroke-width="2" opacity="0.5">
+        <line x1="50" y1="10" x2="50" y2="16"/>
+        <line x1="50" y1="84" x2="50" y2="90"/>
+        <line x1="10" y1="50" x2="16" y2="50"/>
+        <line x1="84" y1="50" x2="90" y2="50"/>
+      </g>
+      <line class="cc-logo-hour" x1="50" y1="50" x2="50" y2="28" stroke="#8CFBFF" stroke-width="4" stroke-linecap="round"/>
+      <line class="cc-logo-min" x1="50" y1="50" x2="70" y2="50" stroke="#22D3EE" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="50" cy="50" r="3.5" fill="#8CFBFF"/>
+      <path class="cc-logo-trend" d="M20,72 L38,58 L50,64 L66,34 L78,22" fill="none" stroke="#A3E635" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <polygon class="cc-logo-trend" points="78,22 70,25.5 74,31.5" fill="#A3E635"/>
+    </svg>
+    """
 
 
 # ---------------------------------------------------------
@@ -260,14 +470,8 @@ CSS_CARTOES_LOTES = """
 * { box-sizing: border-box; }
 body { margin: 0; padding: 4px; font-family: 'Inter', sans-serif; background: transparent; }
 
-@keyframes ccFadeSlideUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes ccSoftFlicker {
-    0%   { opacity: 0.55; }
-    100% { opacity: 1; }
-}
+@keyframes ccFadeSlideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ccSoftFlicker { 0% { opacity: 0.55; } 100% { opacity: 1; } }
 @keyframes ccPulseGlow {
     0%   { box-shadow: 0 0 0 1px rgba(52,211,153,0.08), 0 10px 30px rgba(0,0,0,0.45), 0 0 0px rgba(253, 186, 116, 0.0); }
     50%  { box-shadow: 0 0 0 1px rgba(52,211,153,0.08), 0 10px 30px rgba(0,0,0,0.45), 0 0 22px rgba(253, 186, 116, 0.4); }
@@ -276,7 +480,7 @@ body { margin: 0; padding: 4px; font-family: 'Inter', sans-serif; background: tr
 
 .cc-grid { display: flex; flex-direction: column; gap: 14px; }
 .cc-card {
-    background: rgba(13, 17, 23, 0.7);
+    background: rgba(13, 17, 23, 0.72);
     border: 1px solid rgba(52, 211, 153, 0.18);
     border-radius: 16px;
     padding: 16px 18px;
@@ -284,23 +488,17 @@ body { margin: 0; padding: 4px; font-family: 'Inter', sans-serif; background: tr
     box-shadow: 0 0 0 1px rgba(34,211,238,0.04), 0 10px 30px rgba(0,0,0,0.45);
     position: relative;
     overflow: hidden;
-    transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out;
     animation: ccFadeSlideUp 0.6s ease-out backwards;
 }
-.cc-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(52, 211, 153, 0.55);
-}
+.cc-card:hover { transform: translateY(-3px); border-color: rgba(52, 211, 153, 0.55); }
 .cc-card.cc-pulse { animation: ccFadeSlideUp 0.6s ease-out backwards, ccPulseGlow 2.6s ease-in-out infinite; }
 
 .cc-card-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .cc-asset-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.18rem; font-weight: 700; color: #ECF3F0; }
 .cc-sub { color: #8B92A5; font-size: 0.82rem; margin-top: 4px; }
 
-.cc-badge {
-    display: inline-block; padding: 5px 12px; border-radius: 999px;
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
-}
+.cc-badge { display: inline-block; padding: 5px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
 .cc-badge-isento { background: rgba(52, 211, 153, 0.14); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.4); }
 .cc-badge-contando {
     background: rgba(253, 186, 116, 0.14); color: #FDBA74; border: 1px solid rgba(253, 186, 116, 0.4);
@@ -315,33 +513,20 @@ body { margin: 0; padding: 4px; font-family: 'Inter', sans-serif; background: tr
     transition: width 0.6s ease;
 }
 
-.cc-countdown {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1rem; font-weight: 700; color: #A9FBEA;
-    margin-top: 12px; letter-spacing: 0.03em;
-    display: flex; gap: 6px; flex-wrap: wrap;
-}
-.cc-countdown span.cc-unit {
-    background: rgba(52, 211, 153, 0.08);
-    border: 1px solid rgba(52, 211, 153, 0.2);
-    border-radius: 8px;
-    padding: 2px 8px;
-    transition: opacity 0.25s ease;
-}
+.cc-countdown { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 700; color: #A9FBEA; margin-top: 12px; letter-spacing: 0.03em; display: flex; gap: 6px; flex-wrap: wrap; }
+.cc-countdown span.cc-unit { background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.2); border-radius: 8px; padding: 2px 8px; transition: opacity 0.25s ease; }
 </style>
 """
 
 SCRIPT_CARTOES_LOTES = """
 <script>
 function ccPad(n){ return String(n).padStart(2,'0'); }
-
 function ccMontarHTML(d, h, m, s){
     return '<span class="cc-unit">' + d + 'd</span> : ' +
            '<span class="cc-unit">' + ccPad(h) + 'h</span> : ' +
            '<span class="cc-unit">' + ccPad(m) + 'm</span> : ' +
            '<span class="cc-unit">' + ccPad(s) + 's</span>';
 }
-
 function ccTick(){
   var agora = new Date();
   document.querySelectorAll('.cc-card').forEach(function(card){
@@ -355,10 +540,7 @@ function ccTick(){
     if (diferenca <= 0) {
       if (elFill) elFill.style.width = '100%';
       if (elCd) elCd.innerHTML = '✅ Isento — parabéns!';
-      if (elBadge) {
-        elBadge.textContent = 'LIVRE DE IMPOSTOS ✅';
-        elBadge.className = 'cc-badge cc-badge-isento';
-      }
+      if (elBadge) { elBadge.textContent = 'LIVRE DE IMPOSTOS ✅'; elBadge.className = 'cc-badge cc-badge-isento'; }
       card.classList.remove('cc-pulse');
     } else {
       var totalMs = fim - inicio;
@@ -420,19 +602,10 @@ def widget_tradingview(symbol, container_id, altura=460):
       <script src="https://s3.tradingview.com/tv.js"></script>
       <script>
       new TradingView.widget({{
-        "width": "100%",
-        "height": {altura},
-        "symbol": "{symbol}",
-        "interval": "60",
-        "timezone": "Etc/UTC",
-        "theme": "dark",
-        "style": "1",
-        "locale": "pt",
-        "toolbar_bg": "#05070B",
-        "enable_publishing": false,
-        "hide_top_toolbar": false,
-        "save_image": false,
-        "container_id": "{container_id}"
+        "width": "100%", "height": {altura}, "symbol": "{symbol}", "interval": "60",
+        "timezone": "Etc/UTC", "theme": "dark", "style": "1", "locale": "pt",
+        "toolbar_bg": "#05070B", "enable_publishing": false, "hide_top_toolbar": false,
+        "save_image": false, "container_id": "{container_id}"
       }});
       </script>
     </div>
@@ -448,26 +621,17 @@ with st.sidebar:
         "As tuas COMPRAS existem só nesta aba do browser (privadas, ninguém mais vê). "
         "Exporta sempre que quiseres guardar o progresso."
     )
-
     st.markdown("**⬇️ Exportar Dados**")
-    dados_para_exportar = json.dumps(
-        st.session_state.compras, ensure_ascii=False, indent=2, default=str
-    )
+    dados_para_exportar = json.dumps(st.session_state.compras, ensure_ascii=False, indent=2, default=str)
     st.download_button(
-        label="Descarregar backup (.json)",
-        data=dados_para_exportar,
-        file_name="cryptoclock_backup.json",
-        mime="application/json",
-        use_container_width=True,
-        disabled=len(st.session_state.compras) == 0,
+        label="Descarregar backup (.json)", data=dados_para_exportar,
+        file_name="cryptoclock_backup.json", mime="application/json",
+        use_container_width=True, disabled=len(st.session_state.compras) == 0,
     )
-
     st.markdown("---")
     st.markdown("**⬆️ Importar Dados**")
     ficheiro_importado = st.file_uploader(
-        "Carrega o teu ficheiro cryptoclock_backup.json",
-        type=["json"],
-        label_visibility="collapsed",
+        "Carrega o teu ficheiro cryptoclock_backup.json", type=["json"], label_visibility="collapsed",
     )
     if ficheiro_importado is not None:
         try:
@@ -484,10 +648,15 @@ with st.sidebar:
 
 
 # ---------------------------------------------------------
-# CABEÇALHO
+# CABEÇALHO (logo SVG animado + título com gradiente)
 # ---------------------------------------------------------
-st.markdown("""
-<span class="kc-title">🕒 CryptoClock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
+st.markdown(f"""
+<div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+    {gerar_logo_svg()}
+    <div>
+        <span class="kc-title">CryptoClock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
+    </div>
+</div>
 <div class="kc-subtitle">Uma experiência cinemática para acompanhar os teus 365 dias de isenção de IRS, o mercado ao vivo e a comunidade.</div>
 """, unsafe_allow_html=True)
 
@@ -508,9 +677,7 @@ for compra in st.session_state.compras:
     diferenca = momento_isencao - agora
     isento = diferenca.total_seconds() <= 0
 
-    fracao_concluida = 1.0 if isento else min(
-        max(1 - (diferenca.total_seconds() / SEGUNDOS_EM_365_DIAS), 0.0), 1.0
-    )
+    fracao_concluida = 1.0 if isento else min(max(1 - (diferenca.total_seconds() / SEGUNDOS_EM_365_DIAS), 0.0), 1.0)
 
     total_investido += compra["valor_pago_eur"]
     if isento:
@@ -519,11 +686,8 @@ for compra in st.session_state.compras:
         total_em_contagem += compra["valor_pago_eur"]
 
     lotes_calculados.append({
-        **compra,
-        "momento_compra": momento_compra,
-        "momento_isencao": momento_isencao,
-        "isento": isento,
-        "fracao_concluida": fracao_concluida,
+        **compra, "momento_compra": momento_compra, "momento_isencao": momento_isencao,
+        "isento": isento, "fracao_concluida": fracao_concluida,
     })
 
 lotes_ordenados = sorted(lotes_calculados, key=lambda x: x["momento_isencao"])
@@ -575,12 +739,9 @@ with tab_meu:
                 st.error("Por favor, preenche todos os campos corretamente antes de guardar.")
             else:
                 st.session_state.compras.append({
-                    "id": uuid.uuid4().hex,
-                    "data_compra": str(data_compra_input),
-                    "ativo": ativo.upper().strip(),
-                    "quantidade": quantidade,
-                    "valor_pago_eur": valor_pago,
-                    "plataforma": plataforma.strip(),
+                    "id": uuid.uuid4().hex, "data_compra": str(data_compra_input),
+                    "ativo": ativo.upper().strip(), "quantidade": quantidade,
+                    "valor_pago_eur": valor_pago, "plataforma": plataforma.strip(),
                 })
                 st.success("✅ Compra guardada com sucesso!")
                 st.rerun()
@@ -598,10 +759,8 @@ with tab_meu:
                 for lote in lotes_ordenados
             }
             id_selecionado = st.selectbox(
-                "Escolhe o lote que queres remover",
-                options=list(opcoes.keys()),
-                format_func=lambda id_lote: opcoes[id_lote],
-                label_visibility="collapsed",
+                "Escolhe o lote que queres remover", options=list(opcoes.keys()),
+                format_func=lambda id_lote: opcoes[id_lote], label_visibility="collapsed",
             )
             if st.button("❌ Eliminar Lote Selecionado"):
                 remover_compra_por_id(id_selecionado)
@@ -624,7 +783,7 @@ with tab_mercado:
 
 
 # ===========================================================
-# TAB 3 — FÓRUM ANÓNIMO (partilhado via Google Sheets)
+# TAB 3 — FÓRUM ANÓNIMO
 # ===========================================================
 @st.fragment(run_every=5)
 def widget_forum_ao_vivo():
@@ -632,15 +791,12 @@ def widget_forum_ao_vivo():
         st.session_state.nick = ""
 
     st.session_state.nick = st.text_input(
-        "O teu Pseudónimo Neon",
-        value=st.session_state.nick,
+        "O teu Pseudónimo Neon", value=st.session_state.nick,
         placeholder="Ex: BitcoinWhale99, CryptoAnonymous...",
     )
 
     with st.form("form_forum", clear_on_submit=True):
-        texto_mensagem = st.text_area(
-            "Mensagem", placeholder="Partilha a tua previsão de mercado ou opinião...", height=80
-        )
+        texto_mensagem = st.text_area("Mensagem", placeholder="Partilha a tua previsão de mercado ou opinião...", height=80)
         enviar_mensagem = st.form_submit_button("Enviar 🚀")
 
         if enviar_mensagem:
@@ -657,7 +813,6 @@ def widget_forum_ao_vivo():
                     st.error(f"Não consegui enviar a mensagem. Verifica a ligação à Google Sheet. ({e})")
 
     st.markdown("---")
-
     mensagens = carregar_mensagens()
 
     if erro_ligacao_gsheets:
