@@ -448,6 +448,60 @@ with aba_painel:
 # ===========================================================
 # ABA 2 — CHAT DA COMUNIDADE (partilhado via Google Sheets)
 # ===========================================================
+@st.fragment(run_every=5)
+def widget_chat_ao_vivo():
+    """Este bloco atualiza-se sozinho a cada 5 segundos, sem recarregar
+    o resto da página (gráficos, KPIs, etc.), para simular um chat
+    quase em tempo real."""
+    if "nick" not in st.session_state:
+        st.session_state.nick = ""
+
+    st.session_state.nick = st.text_input(
+        "O teu Nick Anónimo",
+        value=st.session_state.nick,
+        placeholder="Ex: BitcoinWhale99, CryptoAnonymous...",
+    )
+
+    with st.form("form_chat", clear_on_submit=True):
+        texto_mensagem = st.text_area("Mensagem", placeholder="Escreve aqui a tua mensagem...", height=80)
+        enviar_mensagem = st.form_submit_button("Enviar 🚀")
+
+        if enviar_mensagem:
+            if not st.session_state.nick.strip():
+                st.error("Escolhe primeiro um Nick Anónimo.")
+            elif not texto_mensagem.strip():
+                st.error("Escreve uma mensagem antes de enviar.")
+            else:
+                try:
+                    guardar_mensagem(st.session_state.nick.strip(), texto_mensagem.strip())
+                    st.success("Mensagem enviada!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Não consegui enviar a mensagem. Verifica a ligação à Google Sheet. ({e})")
+
+    st.markdown("---")
+
+    mensagens = carregar_mensagens()
+
+    if erro_ligacao_gsheets:
+        st.error("Não consegui ler as mensagens da Google Sheet.")
+        with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
+            st.code(erro_ligacao_gsheets)
+    elif not mensagens:
+        st.caption("Ainda não há mensagens. Sê o primeiro a dizer olá! 👋")
+    else:
+        for msg in reversed(mensagens):
+            st.markdown(f"""
+            <div class="kc-chat-bubble">
+                <span class="kc-chat-nick">{msg.get('nick', 'Anónimo')}</span>
+                <span class="kc-chat-hora">{msg.get('hora', '')}</span>
+                <div class="kc-chat-texto">{msg.get('texto', '')}</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.caption("🟢 Ao vivo — esta zona atualiza-se sozinha a cada 5 segundos.")
+
+
 with aba_chat:
     st.markdown('<div class="kc-section-title">💬 Chat da Comunidade</div>', unsafe_allow_html=True)
 
@@ -462,50 +516,4 @@ with aba_chat:
             with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
                 st.code(erro_ligacao_gsheets)
     else:
-        if "nick" not in st.session_state:
-            st.session_state.nick = ""
-
-        st.session_state.nick = st.text_input(
-            "O teu Nick Anónimo",
-            value=st.session_state.nick,
-            placeholder="Ex: BitcoinWhale99, CryptoAnonymous...",
-        )
-
-        with st.form("form_chat", clear_on_submit=True):
-            texto_mensagem = st.text_area("Mensagem", placeholder="Escreve aqui a tua mensagem...", height=80)
-            enviar_mensagem = st.form_submit_button("Enviar 🚀")
-
-            if enviar_mensagem:
-                if not st.session_state.nick.strip():
-                    st.error("Escolhe primeiro um Nick Anónimo.")
-                elif not texto_mensagem.strip():
-                    st.error("Escreve uma mensagem antes de enviar.")
-                else:
-                    try:
-                        guardar_mensagem(st.session_state.nick.strip(), texto_mensagem.strip())
-                        st.success("Mensagem enviada!")
-                        st.rerun()
-                    except Exception as e:
-                        st.error(f"Não consegui enviar a mensagem. Verifica a ligação à Google Sheet. ({e})")
-
-        st.markdown("---")
-
-        mensagens = carregar_mensagens()
-
-        if erro_ligacao_gsheets:
-            st.error("Não consegui ler as mensagens da Google Sheet.")
-            with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
-                st.code(erro_ligacao_gsheets)
-        elif not mensagens:
-            st.caption("Ainda não há mensagens. Sê o primeiro a dizer olá! 👋")
-        else:
-            for msg in reversed(mensagens):
-                st.markdown(f"""
-                <div class="kc-chat-bubble">
-                    <span class="kc-chat-nick">{msg.get('nick', 'Anónimo')}</span>
-                    <span class="kc-chat-hora">{msg.get('hora', '')}</span>
-                    <div class="kc-chat-texto">{msg.get('texto', '')}</div>
-                </div>
-                """, unsafe_allow_html=True)
-
-        st.caption("As mensagens atualizam-se sempre que a página recarrega ou envias uma nova mensagem.")
+        widget_chat_ao_vivo()
