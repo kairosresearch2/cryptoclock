@@ -141,6 +141,15 @@ section[data-testid="stSidebar"] {
     display: inline-block; vertical-align: middle;
     animation: ccFadeSlideUp 0.7s ease-out backwards;
 }
+.kc-title-gold {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4rem; font-weight: 700; line-height: 1.1;
+    background: linear-gradient(90deg, #FFD700 0%, #F0B90B 45%, #FFE292 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    display: inline-block; vertical-align: middle;
+    filter: drop-shadow(0 0 6px rgba(240, 185, 11, 0.35));
+    animation: ccFadeSlideUp 0.7s ease-out backwards;
+}
 .kc-badge {
     display: inline-block; padding: 5px 12px; border-radius: 999px;
     background: rgba(34, 211, 238, 0.10); border: 1px solid rgba(34, 211, 238, 0.30);
@@ -260,6 +269,7 @@ button, input, select, textarea, div[data-baseweb="select"] { min-height: 44px; 
 @media (max-width: 640px) {
     .block-container { padding-left: 0.6rem; padding-right: 0.6rem; }
     .kc-title { font-size: 1.7rem; }
+    .kc-title-gold { font-size: 1.7rem; }
     .kc-badge { display: block; margin-left: 0; margin-top: 8px; width: fit-content; }
     .kc-metric-value { font-size: 1.2rem; }
 }
@@ -286,6 +296,14 @@ def gerar_html_fundo_animado():
       var W = 0, H = 0, DPR = 1;
       var fasePulso = 0;
 
+      // ---------- estado da Lua interativa ----------
+      var luaGeom = { x: 0, y: 0, r: 0 };
+      var crateras = [];
+      var anguloRotacaoLua = 0;
+      var velocidadeInerciaLua = 0;
+      var arrastoAtivoLua = false;
+      var ultimoXArrasto = 0;
+
       function medirJanela(){
         var pw = window.innerWidth, ph = window.innerHeight;
         try { pw = window.parent.innerWidth; ph = window.parent.innerHeight; } catch(e) {}
@@ -308,13 +326,34 @@ def gerar_html_fundo_animado():
         var quantidade = W < 640 ? 42 : 95;
         for (var i = 0; i < quantidade; i++){
           estrelas.push({
-            x: Math.random() * W,
-            y: Math.random() * H,
+            x: Math.random() * W, y: Math.random() * H,
             r: Math.random() * 1.5 + 0.5,
-            vx: (Math.random() - 0.5) * 0.06,
-            vy: (Math.random() - 0.5) * 0.06,
+            vx: (Math.random() - 0.5) * 0.06, vy: (Math.random() - 0.5) * 0.06,
           });
         }
+      }
+
+      function calcularGeometriaLua(){
+        luaGeom.x = W * 0.93;
+        luaGeom.y = H * 0.05;
+        luaGeom.r = Math.min(W, H) * (W < 640 ? 0.30 : 0.24);
+      }
+
+      function criarCrateras(){
+        crateras = [];
+        var quantidade = 150;
+        for (var i = 0; i < quantidade; i++){
+          var pequena = Math.random() < 0.85;
+          crateras.push({
+            theta: Math.random() * Math.PI * 2,
+            phi: (Math.random() - 0.5) * 1.6,
+            tamanho: pequena ? (Math.random() * 1.3 + 0.4) : (Math.random() * 5 + 3),
+          });
+        }
+      }
+
+      function distanciaEntrePontos(x1, y1, x2, y2){
+        var dx = x2 - x1, dy = y2 - y1; return Math.sqrt(dx*dx + dy*dy);
       }
 
       function ligarRastreioDoRato(){
@@ -334,6 +373,45 @@ def gerar_html_fundo_animado():
         }
       }
 
+      function ligarInteracaoDaLua(){
+        function extrairXY(e){
+          if (e.touches && e.touches.length) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          return { x: e.clientX, y: e.clientY };
+        }
+        function aoDescer(e){
+          var p = extrairXY(e);
+          if (distanciaEntrePontos(p.x, p.y, luaGeom.x, luaGeom.y) < luaGeom.r * 1.3){
+            arrastoAtivoLua = true;
+            ultimoXArrasto = p.x;
+          }
+        }
+        function aoMoverArrasto(e){
+          if (!arrastoAtivoLua) return;
+          var p = extrairXY(e);
+          var delta = p.x - ultimoXArrasto;
+          anguloRotacaoLua += delta * 0.012;
+          velocidadeInerciaLua = delta * 0.012;
+          ultimoXArrasto = p.x;
+        }
+        function aoSoltar(){ arrastoAtivoLua = false; }
+
+        try {
+          window.parent.document.addEventListener('mousedown', aoDescer, { passive: true });
+          window.parent.document.addEventListener('touchstart', aoDescer, { passive: true });
+          window.parent.document.addEventListener('mousemove', aoMoverArrasto, { passive: true });
+          window.parent.document.addEventListener('touchmove', aoMoverArrasto, { passive: true });
+          window.parent.document.addEventListener('mouseup', aoSoltar, { passive: true });
+          window.parent.document.addEventListener('touchend', aoSoltar, { passive: true });
+        } catch (e) {
+          document.addEventListener('mousedown', aoDescer, { passive: true });
+          document.addEventListener('touchstart', aoDescer, { passive: true });
+          document.addEventListener('mousemove', aoMoverArrasto, { passive: true });
+          document.addEventListener('touchmove', aoMoverArrasto, { passive: true });
+          document.addEventListener('mouseup', aoSoltar, { passive: true });
+          document.addEventListener('touchend', aoSoltar, { passive: true });
+        }
+      }
+
       function tentarExpandirParaEcraTodo(){
         try {
           var frame = window.frameElement;
@@ -348,6 +426,71 @@ def gerar_html_fundo_animado():
         } catch (e) {}
       }
 
+      function desenharLua(){
+        var x = luaGeom.x, y = luaGeom.y, r = luaGeom.r;
+
+        // halo néon exterior (mantém a linguagem visual do resto da app)
+        var gradHalo = ctx.createRadialGradient(x, y, r*0.7, x, y, r*2.0);
+        gradHalo.addColorStop(0, 'rgba(180,225,255,0.30)');
+        gradHalo.addColorStop(1, 'rgba(120,200,255,0)');
+        ctx.fillStyle = gradHalo;
+        ctx.beginPath(); ctx.arc(x, y, r*2.0, 0, Math.PI*2); ctx.fill();
+
+        ctx.save();
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI*2); ctx.clip();
+
+        // disco base (cinza claro, como a foto real da Lua)
+        var gradDisco = ctx.createRadialGradient(x - r*0.3, y - r*0.3, r*0.1, x, y, r*1.3);
+        gradDisco.addColorStop(0, '#EDF0F2');
+        gradDisco.addColorStop(0.55, '#C9CFD5');
+        gradDisco.addColorStop(1, '#8F98A1');
+        ctx.fillStyle = gradDisco;
+        ctx.fillRect(x - r, y - r, r*2, r*2);
+
+        // rotação: automática + inércia do arrasto do utilizador
+        anguloRotacaoLua += 0.0022 + velocidadeInerciaLua;
+        velocidadeInerciaLua *= 0.94;
+        if (Math.abs(velocidadeInerciaLua) < 0.00005) velocidadeInerciaLua = 0;
+
+        for (var i = 0; i < crateras.length; i++){
+          var c = crateras[i];
+          var thetaEfetivo = c.theta + anguloRotacaoLua;
+          var cosT = Math.cos(thetaEfetivo);
+          if (cosT < -0.15) continue;
+          var cx = x + Math.sin(thetaEfetivo) * r * 0.92;
+          var cy = y + c.phi * r * 0.85;
+          var escala = Math.max(0.15, cosT);
+          var raioCratera = c.tamanho * escala;
+
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(110,116,124,' + (0.55 * escala) + ')';
+          ctx.arc(cx + raioCratera*0.25, cy + raioCratera*0.25, raioCratera, 0, Math.PI*2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(240,242,244,' + (0.55 * escala) + ')';
+          ctx.arc(cx - raioCratera*0.2, cy - raioCratera*0.2, raioCratera*0.72, 0, Math.PI*2);
+          ctx.fill();
+        }
+
+        // terminador — sombra fixa (a "luz" não roda com a superfície)
+        var gradSombra = ctx.createLinearGradient(x - r, y - r*0.2, x + r*0.35, y + r);
+        gradSombra.addColorStop(0, 'rgba(5,7,11,0)');
+        gradSombra.addColorStop(0.55, 'rgba(5,7,11,0)');
+        gradSombra.addColorStop(0.75, 'rgba(5,7,11,0.55)');
+        gradSombra.addColorStop(1, 'rgba(5,7,11,0.88)');
+        ctx.fillStyle = gradSombra;
+        ctx.fillRect(x - r, y - r, r*2, r*2);
+
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(150,225,255,0.35)';
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      }
+
       function desenhar(){
         ctx.clearRect(0, 0, W, H);
 
@@ -357,15 +500,8 @@ def gerar_html_fundo_animado():
         ctx.fillStyle = gradFundo;
         ctx.fillRect(0, 0, W, H);
 
-        var luaX = W * 0.86, luaY = H * 0.14, luaR = Math.min(W, H) * 0.075;
-        var gradLua = ctx.createRadialGradient(luaX, luaY, luaR*0.2, luaX, luaY, luaR*1.9);
-        gradLua.addColorStop(0, 'rgba(195,240,255,0.9)');
-        gradLua.addColorStop(0.5, 'rgba(120,200,255,0.22)');
-        gradLua.addColorStop(1, 'rgba(120,200,255,0)');
-        ctx.fillStyle = gradLua;
-        ctx.beginPath(); ctx.arc(luaX, luaY, luaR*1.9, 0, Math.PI*2); ctx.fill();
-        ctx.fillStyle = 'rgba(225,245,255,0.85)';
-        ctx.beginPath(); ctx.arc(luaX, luaY, luaR, 0, Math.PI*2); ctx.fill();
+        calcularGeometriaLua();
+        desenharLua();
 
         for (var i = 0; i < estrelas.length; i++){
           var s = estrelas[i];
@@ -398,7 +534,7 @@ def gerar_html_fundo_animado():
         ctx.beginPath();
         for (var p = 0; p <= pontos; p++){
           var t = p / pontos;
-          var x = W*0.02 + t * (luaX - W*0.05);
+          var x = W*0.02 + t * (luaGeom.x - W*0.05);
           var baseY = H*0.95 - t*t*(H*0.78);
           var onda = Math.sin(t*10 + fasePulso*20) * 5 * (1 - t*0.6);
           var y = baseY + onda;
@@ -416,7 +552,9 @@ def gerar_html_fundo_animado():
 
       redimensionar();
       criarEstrelas();
+      criarCrateras();
       ligarRastreioDoRato();
+      ligarInteracaoDaLua();
       tentarExpandirParaEcraTodo();
 
       window.addEventListener('resize', function(){ redimensionar(); criarEstrelas(); });
@@ -650,7 +788,7 @@ st.markdown(f"""
 <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
 {gerar_logo_svg()}
 <div>
-<span class="kc-title">CryptoClock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
+<span class="kc-title-gold">Crypto</span><span class="kc-title">Clock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
 </div>
 </div>
 <div class="kc-subtitle">Uma experiência cinemática para acompanhar os teus 365 dias de isenção de IRS, o mercado ao vivo e a comunidade.</div>
