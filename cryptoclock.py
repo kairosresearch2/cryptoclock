@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import uuid
 import json
+import textwrap
 from datetime import date, datetime, timedelta
 
 try:
@@ -436,29 +437,24 @@ st.iframe(gerar_html_fundo_animado(), height=1)
 # LOGO SVG ANIMADO — "O RELÓGIO-TOURO INFINITO"
 # ---------------------------------------------------------
 def gerar_logo_svg():
-    return """
-    <svg width="60" height="60" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 6px rgba(34,211,238,0.6));">
+    svg = """
+    <svg width="56" height="56" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 6px rgba(34,211,238,0.55));">
       <style>
         @keyframes ccHourSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes ccMinSpin  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         .cc-logo-hour { transform-origin: 50px 50px; animation: ccHourSpin 16s linear infinite; }
         .cc-logo-min  { transform-origin: 50px 50px; animation: ccMinSpin 6s linear infinite; }
-        .cc-logo-trend { filter: drop-shadow(0 0 5px rgba(163,230,53,0.9)); }
+        .cc-logo-trend { filter: drop-shadow(0 0 4px rgba(163,230,53,0.85)); }
       </style>
-      <circle cx="50" cy="50" r="42" fill="none" stroke="#22D3EE" stroke-width="3" opacity="0.85"/>
-      <g stroke="#22D3EE" stroke-width="2" opacity="0.5">
-        <line x1="50" y1="10" x2="50" y2="16"/>
-        <line x1="50" y1="84" x2="50" y2="90"/>
-        <line x1="10" y1="50" x2="16" y2="50"/>
-        <line x1="84" y1="50" x2="90" y2="50"/>
-      </g>
-      <line class="cc-logo-hour" x1="50" y1="50" x2="50" y2="28" stroke="#8CFBFF" stroke-width="4" stroke-linecap="round"/>
-      <line class="cc-logo-min" x1="50" y1="50" x2="70" y2="50" stroke="#22D3EE" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="50" cy="50" r="3.5" fill="#8CFBFF"/>
-      <path class="cc-logo-trend" d="M20,72 L38,58 L50,64 L66,34 L78,22" fill="none" stroke="#A3E635" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <polygon class="cc-logo-trend" points="78,22 70,25.5 74,31.5" fill="#A3E635"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#22D3EE" stroke-width="2.5" opacity="0.8"/>
+      <line class="cc-logo-hour" x1="50" y1="50" x2="50" y2="30" stroke="#8CFBFF" stroke-width="3.5" stroke-linecap="round"/>
+      <line class="cc-logo-min" x1="50" y1="50" x2="68" y2="50" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="50" cy="50" r="3" fill="#8CFBFF"/>
+      <path class="cc-logo-trend" d="M22,70 L40,58 L52,63 L66,36 L78,24" fill="none" stroke="#A3E635" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <polygon class="cc-logo-trend" points="78,24 71,27.5 74.5,33" fill="#A3E635"/>
     </svg>
     """
+    return textwrap.dedent(svg).strip()
 
 
 # ---------------------------------------------------------
@@ -652,10 +648,10 @@ with st.sidebar:
 # ---------------------------------------------------------
 st.markdown(f"""
 <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-    {gerar_logo_svg()}
-    <div>
-        <span class="kc-title">CryptoClock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
-    </div>
+{gerar_logo_svg()}
+<div>
+<span class="kc-title">CryptoClock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
+</div>
 </div>
 <div class="kc-subtitle">Uma experiência cinemática para acompanhar os teus 365 dias de isenção de IRS, o mercado ao vivo e a comunidade.</div>
 """, unsafe_allow_html=True)
@@ -823,13 +819,11 @@ def widget_forum_ao_vivo():
         st.caption("Ainda não há mensagens. Sê o primeiro a partilhar uma previsão! 👋")
     else:
         for msg in reversed(mensagens):
-            st.markdown(f"""
-            <div class="kc-chat-bubble">
-                <span class="kc-chat-nick">{msg.get('nick', 'Anónimo')}</span>
-                <span class="kc-chat-hora">{msg.get('hora', '')}</span>
-                <div class="kc-chat-texto">{msg.get('texto', '')}</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="kc-chat-bubble">
+<span class="kc-chat-nick">{msg.get('nick', 'Anónimo')}</span>
+<span class="kc-chat-hora">{msg.get('hora', '')}</span>
+<div class="kc-chat-texto">{msg.get('texto', '')}</div>
+</div>""", unsafe_allow_html=True)
 
     st.caption("🟢 Ao vivo — esta zona atualiza-se sozinha a cada 5 segundos.")
 
