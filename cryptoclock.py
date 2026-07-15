@@ -45,7 +45,7 @@ def formatar_euros(valor):
 
 
 # ---------------------------------------------------------
-# LIGAÇÃO AO GOOGLE SHEETS (para o chat, que é partilhado por todos)
+# LIGAÇÃO AO GOOGLE SHEETS (para o Fórum Anónimo, partilhado por todos)
 # ---------------------------------------------------------
 conn_gsheets = None
 erro_ligacao_gsheets = None
@@ -86,7 +86,7 @@ def guardar_mensagem(nick, texto):
 
 
 # ---------------------------------------------------------
-# CSS GLOBAL — WEB3 DARK THEME, GLASSMORPHISM, GRADIENTES
+# CSS GLOBAL — "CINEMATIC DARK WEALTH"
 # ---------------------------------------------------------
 st.markdown("""
 <style>
@@ -96,16 +96,21 @@ html, body, [class*="css"], .stMarkdown, p, span, label, div {
     font-family: 'Inter', sans-serif;
 }
 
+@keyframes ccFadeSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 .stApp {
     background:
-        radial-gradient(circle at 12% -10%, rgba(34, 211, 238, 0.10), transparent 42%),
-        radial-gradient(circle at 88% 108%, rgba(163, 230, 53, 0.08), transparent 45%),
-        #080B10;
+        radial-gradient(circle at 18% -8%, rgba(52, 211, 153, 0.12), transparent 40%),
+        radial-gradient(circle at 82% 105%, rgba(34, 211, 238, 0.10), transparent 45%),
+        #05070B;
 }
 
 .block-container { padding-top: 2.2rem; padding-left: 1.1rem; padding-right: 1.1rem; max-width: 920px; }
 section[data-testid="stSidebar"] {
-    background-color: #0B0F16;
+    background-color: #070A10;
     border-right: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -113,9 +118,10 @@ section[data-testid="stSidebar"] {
 .kc-title {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 2.5rem; font-weight: 700; line-height: 1.1;
-    background: linear-gradient(90deg, #22D3EE 0%, #A3E635 100%);
+    background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     display: inline-block; vertical-align: middle;
+    animation: ccFadeSlideUp 0.7s ease-out backwards;
 }
 .kc-badge {
     display: inline-block; padding: 5px 12px; border-radius: 999px;
@@ -123,93 +129,113 @@ section[data-testid="stSidebar"] {
     color: #7FE9F7; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
     text-transform: uppercase; margin-left: 10px; vertical-align: middle;
 }
-.kc-subtitle { color: #8B92A5; font-size: 0.93rem; margin-top: 8px; margin-bottom: 1.6rem; }
+.kc-subtitle {
+    color: #8B92A5; font-size: 0.93rem; margin-top: 8px; margin-bottom: 1.6rem;
+    animation: ccFadeSlideUp 0.8s ease-out 0.1s backwards;
+}
 
 .kc-section-title {
     font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 700;
-    background: linear-gradient(90deg, #22D3EE 0%, #A3E635 100%);
+    background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     display: inline-block; margin-top: 1.8rem; margin-bottom: 0.9rem;
+    animation: ccFadeSlideUp 0.6s ease-out backwards;
 }
 
-/* ---------- Cartões "vidro fosco" (KPIs) ---------- */
+/* ---------- Cartões "vidro líquido" (KPIs) ---------- */
 .kc-glass-card {
-    background: rgba(255,255,255,0.035);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 18px;
+    background: rgba(13, 17, 23, 0.7);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    border-radius: 16px;
     padding: 18px 20px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 0 0 1px rgba(34,211,238,0.04), 0 10px 30px rgba(0,0,0,0.45);
     height: 100%;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    animation: ccFadeSlideUp 0.7s ease-out backwards;
+}
+.kc-glass-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(52, 211, 153, 0.5);
+    box-shadow: 0 0 24px rgba(52, 211, 153, 0.18), 0 14px 34px rgba(0,0,0,0.5);
 }
 .kc-metric-label { color: #8B92A5; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
-.kc-metric-value { font-family: 'JetBrains Mono', monospace; font-size: 1.45rem; font-weight: 700; color: #E9ECF2; }
+.kc-metric-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.55rem; font-weight: 700; color: #ECF3F0; letter-spacing: -0.01em; }
 .kc-metric-value.green { color: #34D399; }
 .kc-metric-value.orange { color: #FDBA74; }
 
-/* ---------- Formulário (glassmorphism) ---------- */
+/* ---------- Formulário (glassmorphism líquido) ---------- */
 div[data-testid="stForm"] {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
+    background: rgba(13, 17, 23, 0.7);
+    border: 1px solid rgba(34, 211, 238, 0.18);
+    border-radius: 16px;
     padding: 1.3rem 1.3rem 0.3rem 1.3rem;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 0 0 1px rgba(52,211,153,0.04), 0 10px 30px rgba(0,0,0,0.45);
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    animation: ccFadeSlideUp 0.75s ease-out 0.05s backwards;
+}
+div[data-testid="stForm"]:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    box-shadow: 0 0 22px rgba(34, 211, 238, 0.12), 0 12px 30px rgba(0,0,0,0.5);
 }
 
-/* ---------- Zona de remoção ---------- */
-.kc-remove-wrap {
-    background: rgba(255, 77, 94, 0.05);
-    border: 1px solid rgba(255, 77, 94, 0.25);
-    border-radius: 18px;
-    padding: 1rem 1.2rem 1.2rem 1.2rem;
-    margin-top: 0.8rem;
-    backdrop-filter: blur(10px);
-}
-
-/* ---------- Botões, com transições suaves ---------- */
+/* ---------- Botões, com transições fluidas ---------- */
 div[data-testid="stButton"] button,
 div[data-testid="stFormSubmitButton"] button,
 div[data-testid="stDownloadButton"] button {
-    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    transition: all 0.3s ease-in-out;
     border: none; font-weight: 700; border-radius: 12px; width: 100%;
     padding: 0.6rem 1rem;
 }
-
-/* botão "Remover Lote Selecionado" — vermelho-neon */
 div[data-testid="stButton"] button {
-    background: linear-gradient(90deg, #FF3B5C 0%, #FF6B7A 100%);
-    color: #0B0F16;
-    box-shadow: 0 0 0 rgba(255, 59, 92, 0);
+    background: rgba(255, 59, 92, 0.12);
+    border: 1px solid rgba(255, 59, 92, 0.4) !important;
+    color: #FF7C8E;
 }
 div[data-testid="stButton"] button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(255, 59, 92, 0.45);
-    filter: brightness(1.08);
+    transform: translateY(-3px);
+    background: rgba(255, 59, 92, 0.2);
+    box-shadow: 0 0 20px rgba(255, 59, 92, 0.35);
 }
-
-/* botões de submeter formulário (Guardar Compra, Enviar no chat) — ciano-lima */
 div[data-testid="stFormSubmitButton"] button {
-    background: linear-gradient(90deg, #22D3EE 0%, #A3E635 100%);
-    color: #080B10;
+    background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
+    color: #05070B;
 }
 div[data-testid="stFormSubmitButton"] button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(34, 211, 238, 0.35);
-    filter: brightness(1.06);
+    transform: translateY(-3px);
+    box-shadow: 0 0 22px rgba(52, 211, 153, 0.4);
 }
-
-/* botão de exportar */
 div[data-testid="stDownloadButton"] button {
-    background: linear-gradient(90deg, #22D3EE 0%, #A3E635 100%);
-    color: #080B10;
+    background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
+    color: #05070B;
 }
 div[data-testid="stDownloadButton"] button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(163, 230, 53, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 0 22px rgba(34, 211, 238, 0.35);
 }
+
+/* ---------- Fórum Anónimo — bolhas de chat ---------- */
+.kc-chat-bubble {
+    background: rgba(13, 17, 23, 0.7);
+    border: 1px solid rgba(52, 211, 153, 0.15);
+    border-radius: 16px;
+    padding: 10px 16px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(14px);
+    transition: border-color 0.3s ease-in-out;
+    animation: ccFadeSlideUp 0.5s ease-out backwards;
+}
+.kc-chat-bubble:hover { border-color: rgba(52, 211, 153, 0.4); }
+.kc-chat-nick {
+    font-weight: 700; font-size: 0.85rem;
+    background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.kc-chat-hora { color: #55606E; font-size: 0.7rem; float: right; }
+.kc-chat-texto { color: #DCE6E1; font-size: 0.92rem; margin-top: 4px; }
 
 /* ---------- Acessibilidade tátil ---------- */
 button, input, select, textarea, div[data-baseweb="select"] { min-height: 44px; }
@@ -219,7 +245,7 @@ button, input, select, textarea, div[data-baseweb="select"] { min-height: 44px; 
     .block-container { padding-left: 0.6rem; padding-right: 0.6rem; }
     .kc-title { font-size: 1.9rem; }
     .kc-badge { display: block; margin-left: 0; margin-top: 8px; width: fit-content; }
-    .kc-metric-value { font-size: 1.15rem; }
+    .kc-metric-value { font-size: 1.2rem; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -232,64 +258,75 @@ CSS_CARTOES_LOTES = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@600;700&display=swap');
 * { box-sizing: border-box; }
-body {
-    margin: 0; padding: 4px;
-    font-family: 'Inter', sans-serif;
-    background: transparent;
+body { margin: 0; padding: 4px; font-family: 'Inter', sans-serif; background: transparent; }
+
+@keyframes ccFadeSlideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
-.cc-grid { display: flex; flex-direction: column; gap: 14px; }
-.cc-card {
-    background: rgba(255,255,255,0.035);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 18px;
-    padding: 16px 18px;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-    position: relative;
-    overflow: hidden;
-}
-.cc-card.cc-pulse {
-    animation: ccPulseGlow 2.4s ease-in-out infinite;
+@keyframes ccSoftFlicker {
+    0%   { opacity: 0.55; }
+    100% { opacity: 1; }
 }
 @keyframes ccPulseGlow {
-    0%   { box-shadow: 0 8px 24px rgba(0,0,0,0.35), 0 0 0px rgba(253, 186, 116, 0.0); }
-    50%  { box-shadow: 0 8px 24px rgba(0,0,0,0.35), 0 0 22px rgba(253, 186, 116, 0.35); }
-    100% { box-shadow: 0 8px 24px rgba(0,0,0,0.35), 0 0 0px rgba(253, 186, 116, 0.0); }
+    0%   { box-shadow: 0 0 0 1px rgba(52,211,153,0.08), 0 10px 30px rgba(0,0,0,0.45), 0 0 0px rgba(253, 186, 116, 0.0); }
+    50%  { box-shadow: 0 0 0 1px rgba(52,211,153,0.08), 0 10px 30px rgba(0,0,0,0.45), 0 0 22px rgba(253, 186, 116, 0.4); }
+    100% { box-shadow: 0 0 0 1px rgba(52,211,153,0.08), 0 10px 30px rgba(0,0,0,0.45), 0 0 0px rgba(253, 186, 116, 0.0); }
 }
+
+.cc-grid { display: flex; flex-direction: column; gap: 14px; }
+.cc-card {
+    background: rgba(13, 17, 23, 0.7);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    border-radius: 16px;
+    padding: 16px 18px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 0 0 1px rgba(34,211,238,0.04), 0 10px 30px rgba(0,0,0,0.45);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    animation: ccFadeSlideUp 0.6s ease-out backwards;
+}
+.cc-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(52, 211, 153, 0.55);
+}
+.cc-card.cc-pulse { animation: ccFadeSlideUp 0.6s ease-out backwards, ccPulseGlow 2.6s ease-in-out infinite; }
+
 .cc-card-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-.cc-asset-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.15rem; font-weight: 700; color: #E9ECF2;
-}
+.cc-asset-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.18rem; font-weight: 700; color: #ECF3F0; }
 .cc-sub { color: #8B92A5; font-size: 0.82rem; margin-top: 4px; }
+
 .cc-badge {
     display: inline-block; padding: 5px 12px; border-radius: 999px;
     font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
 }
-.cc-badge-isento {
-    background: rgba(52, 211, 153, 0.14); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.4);
-}
+.cc-badge-isento { background: rgba(52, 211, 153, 0.14); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.4); }
 .cc-badge-contando {
     background: rgba(253, 186, 116, 0.14); color: #FDBA74; border: 1px solid rgba(253, 186, 116, 0.4);
-    animation: ccBadgePulse 1.6s ease-in-out infinite;
+    animation: ccSoftFlicker 1.6s ease-in-out infinite alternate;
 }
-@keyframes ccBadgePulse {
-    0%, 100% { opacity: 1; } 50% { opacity: 0.55; }
-}
-.cc-progress-track {
-    width: 100%; height: 8px; border-radius: 999px;
-    background: rgba(255,255,255,0.08); margin-top: 12px; overflow: hidden;
-}
+
+.cc-progress-track { width: 100%; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); margin-top: 12px; overflow: hidden; }
 .cc-progress-fill {
     height: 100%; border-radius: 999px;
-    background: linear-gradient(90deg, #22D3EE 0%, #A3E635 100%);
-    box-shadow: 0 0 10px rgba(163, 230, 53, 0.55);
+    background: linear-gradient(90deg, #22D3EE 0%, #34D399 100%);
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
     transition: width 0.6s ease;
 }
+
 .cc-countdown {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.95rem; font-weight: 700; color: #C9F5FF;
-    margin-top: 10px; letter-spacing: 0.02em;
+    font-size: 1rem; font-weight: 700; color: #A9FBEA;
+    margin-top: 12px; letter-spacing: 0.03em;
+    display: flex; gap: 6px; flex-wrap: wrap;
+}
+.cc-countdown span.cc-unit {
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    border-radius: 8px;
+    padding: 2px 8px;
+    transition: opacity 0.25s ease;
 }
 </style>
 """
@@ -297,6 +334,14 @@ body {
 SCRIPT_CARTOES_LOTES = """
 <script>
 function ccPad(n){ return String(n).padStart(2,'0'); }
+
+function ccMontarHTML(d, h, m, s){
+    return '<span class="cc-unit">' + d + 'd</span> : ' +
+           '<span class="cc-unit">' + ccPad(h) + 'h</span> : ' +
+           '<span class="cc-unit">' + ccPad(m) + 'm</span> : ' +
+           '<span class="cc-unit">' + ccPad(s) + 's</span>';
+}
+
 function ccTick(){
   var agora = new Date();
   document.querySelectorAll('.cc-card').forEach(function(card){
@@ -309,7 +354,7 @@ function ccTick(){
 
     if (diferenca <= 0) {
       if (elFill) elFill.style.width = '100%';
-      if (elCd) elCd.textContent = '✅ Isento — parabéns!';
+      if (elCd) elCd.innerHTML = '✅ Isento — parabéns!';
       if (elBadge) {
         elBadge.textContent = 'LIVRE DE IMPOSTOS ✅';
         elBadge.className = 'cc-badge cc-badge-isento';
@@ -326,7 +371,12 @@ function ccTick(){
       var h = Math.floor((totalSeg % 86400) / 3600);
       var m = Math.floor((totalSeg % 3600) / 60);
       var s = totalSeg % 60;
-      if (elCd) elCd.textContent = d + 'd ' + ccPad(h) + 'h ' + ccPad(m) + 'm ' + ccPad(s) + 's restantes';
+
+      if (elCd) {
+        elCd.style.opacity = '0.55';
+        elCd.innerHTML = ccMontarHTML(d, h, m, s);
+        requestAnimationFrame(function(){ elCd.style.opacity = '1'; });
+      }
     }
   });
 }
@@ -359,11 +409,11 @@ def html_cartao_lote(lote):
 def renderizar_grid_de_lotes(lotes_ordenados):
     cartoes_html = "".join(html_cartao_lote(lote) for lote in lotes_ordenados)
     html_final = CSS_CARTOES_LOTES + f'<div class="cc-grid">{cartoes_html}</div>' + SCRIPT_CARTOES_LOTES
-    altura_estimada = max(220, 40 + len(lotes_ordenados) * 190)
+    altura_estimada = max(230, 40 + len(lotes_ordenados) * 200)
     st.iframe(html_final, height=altura_estimada)
 
 
-def widget_tradingview(symbol, container_id, altura=420):
+def widget_tradingview(symbol, container_id, altura=460):
     return f"""
     <div class="tradingview-widget-container">
       <div id="{container_id}"></div>
@@ -378,7 +428,7 @@ def widget_tradingview(symbol, container_id, altura=420):
         "theme": "dark",
         "style": "1",
         "locale": "pt",
-        "toolbar_bg": "#0B0F16",
+        "toolbar_bg": "#05070B",
         "enable_publishing": false,
         "hide_top_toolbar": false,
         "save_image": false,
@@ -438,12 +488,12 @@ with st.sidebar:
 # ---------------------------------------------------------
 st.markdown("""
 <span class="kc-title">🕒 CryptoClock</span><span class="kc-badge">v1.0 · Portugal Fiscal Compliance</span>
-<div class="kc-subtitle">Regista as tuas compras de cripto, acompanha os 365 dias de isenção em tempo real e conversa com a comunidade.</div>
+<div class="kc-subtitle">Uma experiência cinemática para acompanhar os teus 365 dias de isenção de IRS, o mercado ao vivo e a comunidade.</div>
 """, unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------
-# CÁLCULOS DOS LOTES (usados na Tab 1)
+# CÁLCULOS DOS LOTES
 # ---------------------------------------------------------
 agora = datetime.now()
 total_investido = 0.0
@@ -482,8 +532,8 @@ lotes_ordenados = sorted(lotes_calculados, key=lambda x: x["momento_isencao"])
 # ---------------------------------------------------------
 # ABAS PRINCIPAIS
 # ---------------------------------------------------------
-tab_meu, tab_mercado, tab_chat = st.tabs([
-    "🕒 O meu CryptoClock", "📈 Mercado Real-Time", "💬 Chat da Comunidade"
+tab_meu, tab_mercado, tab_forum = st.tabs([
+    "🕒 O Meu CryptoClock", "📈 Cockpit de Mercado", "💬 Fórum Anónimo"
 ])
 
 
@@ -497,7 +547,6 @@ with tab_meu:
         icon="🔒",
     )
 
-    # -------- KPI CARDS --------
     kpi1, kpi2, kpi3 = st.columns(3)
     with kpi1:
         st.markdown(f"""<div class="kc-glass-card"><div class="kc-metric-label">Total Investido</div>
@@ -509,7 +558,6 @@ with tab_meu:
         st.markdown(f"""<div class="kc-glass-card"><div class="kc-metric-label">⏳ Em Contagem</div>
         <div class="kc-metric-value orange">{formatar_euros(total_em_contagem)}</div></div>""", unsafe_allow_html=True)
 
-    # -------- FORMULÁRIO --------
     st.markdown('<div class="kc-section-title">➕ Registar nova compra</div>', unsafe_allow_html=True)
     with st.form("form_nova_compra", clear_on_submit=True):
         col1, col2 = st.columns(2)
@@ -537,7 +585,6 @@ with tab_meu:
                 st.success("✅ Compra guardada com sucesso!")
                 st.rerun()
 
-    # -------- CRYPTOCLOCK GRID (cartões com relógio ao vivo) --------
     st.markdown('<div class="kc-section-title">⏱️ Painel de Lotes (CryptoClock Grid)</div>', unsafe_allow_html=True)
 
     if not lotes_calculados:
@@ -545,32 +592,29 @@ with tab_meu:
     else:
         renderizar_grid_de_lotes(lotes_ordenados)
 
-        # -------- REMOVER / LIQUIDAR UM LOTE --------
-        st.markdown('<div class="kc-remove-wrap">', unsafe_allow_html=True)
-        st.markdown("**🗑️ Remover ou liquidar um lote**")
-        opcoes = {
-            lote["id"]: f"{lote['ativo']} · {lote['plataforma']} · {lote['data_compra']} · {formatar_euros(lote['valor_pago_eur'])}"
-            for lote in lotes_ordenados
-        }
-        id_selecionado = st.selectbox(
-            "Escolhe o lote que queres remover",
-            options=list(opcoes.keys()),
-            format_func=lambda id_lote: opcoes[id_lote],
-            label_visibility="collapsed",
-        )
-        if st.button("❌ Remover Lote Selecionado"):
-            remover_compra_por_id(id_selecionado)
-            st.success("Lote removido com sucesso!")
-            st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+        with st.expander("🗑️ Gerir / eliminar um lote"):
+            opcoes = {
+                lote["id"]: f"{lote['ativo']} · {lote['plataforma']} · {lote['data_compra']} · {formatar_euros(lote['valor_pago_eur'])}"
+                for lote in lotes_ordenados
+            }
+            id_selecionado = st.selectbox(
+                "Escolhe o lote que queres remover",
+                options=list(opcoes.keys()),
+                format_func=lambda id_lote: opcoes[id_lote],
+                label_visibility="collapsed",
+            )
+            if st.button("❌ Eliminar Lote Selecionado"):
+                remover_compra_por_id(id_selecionado)
+                st.success("Lote removido com sucesso!")
+                st.rerun()
 
 
 # ===========================================================
-# TAB 2 — MERCADO REAL-TIME
+# TAB 2 — COCKPIT DE MERCADO
 # ===========================================================
 with tab_mercado:
-    st.markdown('<div class="kc-section-title">📈 Mercado ao Vivo</div>', unsafe_allow_html=True)
-    st.caption("Gráficos oficiais da TradingView, em tempo real, tema escuro.")
+    st.markdown('<div class="kc-section-title">📈 Cockpit de Mercado</div>', unsafe_allow_html=True)
+    st.caption("Gráficos oficiais da TradingView, em tempo real, modo escuro absoluto.")
 
     st.markdown("**🪙 BTC/USDT**")
     st.iframe(widget_tradingview("BINANCE:BTCUSDT", "tv_btc_full", altura=460), height=480)
@@ -580,26 +624,28 @@ with tab_mercado:
 
 
 # ===========================================================
-# TAB 3 — CHAT DA COMUNIDADE (partilhado via Google Sheets)
+# TAB 3 — FÓRUM ANÓNIMO (partilhado via Google Sheets)
 # ===========================================================
 @st.fragment(run_every=5)
-def widget_chat_ao_vivo():
+def widget_forum_ao_vivo():
     if "nick" not in st.session_state:
         st.session_state.nick = ""
 
     st.session_state.nick = st.text_input(
-        "O teu Nick Anónimo",
+        "O teu Pseudónimo Neon",
         value=st.session_state.nick,
         placeholder="Ex: BitcoinWhale99, CryptoAnonymous...",
     )
 
-    with st.form("form_chat", clear_on_submit=True):
-        texto_mensagem = st.text_area("Mensagem", placeholder="Escreve aqui a tua mensagem...", height=80)
+    with st.form("form_forum", clear_on_submit=True):
+        texto_mensagem = st.text_area(
+            "Mensagem", placeholder="Partilha a tua previsão de mercado ou opinião...", height=80
+        )
         enviar_mensagem = st.form_submit_button("Enviar 🚀")
 
         if enviar_mensagem:
             if not st.session_state.nick.strip():
-                st.error("Escolhe primeiro um Nick Anónimo.")
+                st.error("Escolhe primeiro um Pseudónimo Neon.")
             elif not texto_mensagem.strip():
                 st.error("Escreve uma mensagem antes de enviar.")
             else:
@@ -619,26 +665,27 @@ def widget_chat_ao_vivo():
         with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
             st.code(erro_ligacao_gsheets)
     elif not mensagens:
-        st.caption("Ainda não há mensagens. Sê o primeiro a dizer olá! 👋")
+        st.caption("Ainda não há mensagens. Sê o primeiro a partilhar uma previsão! 👋")
     else:
         for msg in reversed(mensagens):
             st.markdown(f"""
-            <div class="kc-glass-card" style="margin-bottom:8px; padding:10px 14px;">
-                <span style="color:#7FE9F7; font-weight:700; font-size:0.85rem;">{msg.get('nick', 'Anónimo')}</span>
-                <span style="color:#5C6270; font-size:0.7rem; float:right;">{msg.get('hora', '')}</span>
-                <div style="color:#E9ECF2; font-size:0.92rem; margin-top:3px;">{msg.get('texto', '')}</div>
+            <div class="kc-chat-bubble">
+                <span class="kc-chat-nick">{msg.get('nick', 'Anónimo')}</span>
+                <span class="kc-chat-hora">{msg.get('hora', '')}</span>
+                <div class="kc-chat-texto">{msg.get('texto', '')}</div>
             </div>
             """, unsafe_allow_html=True)
 
     st.caption("🟢 Ao vivo — esta zona atualiza-se sozinha a cada 5 segundos.")
 
 
-with tab_chat:
-    st.markdown('<div class="kc-section-title">💬 Chat da Comunidade</div>', unsafe_allow_html=True)
+with tab_forum:
+    st.markdown('<div class="kc-section-title">💬 Fórum Anónimo</div>', unsafe_allow_html=True)
+    st.caption("Partilha previsões de mercado e opiniões, de forma totalmente anónima.")
 
     if not GSHEETS_DISPONIVEL or conn_gsheets is None:
         st.warning(
-            "O chat ainda não está ligado à Google Sheet. Confirma que:\n\n"
+            "O Fórum ainda não está ligado à Google Sheet. Confirma que:\n\n"
             "1. Adicionaste `st-gsheets-connection` ao `requirements.txt`\n"
             "2. Configuraste os **Secrets** da app em share.streamlit.io → Settings → Secrets\n"
             "3. Partilhaste a folha com o email do teu Service Account, como **Editor**"
@@ -647,4 +694,4 @@ with tab_chat:
             with st.expander("🔧 Ver detalhe técnico do erro (copia isto e envia ao Claude)"):
                 st.code(erro_ligacao_gsheets)
     else:
-        widget_chat_ao_vivo()
+        widget_forum_ao_vivo()
